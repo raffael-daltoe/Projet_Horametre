@@ -91,7 +91,7 @@ int Systeme::differenceTemps(){
 }
 
 void Systeme::calculeTemps(int tempsDiff){
-    QTime tempsFichier = QTime::fromString(this->lireFichier());        // prender le valeur tu fichier et transformer pour QTime
+    QTime tempsFichier = QTime::fromString(this->lireFichier());        // prender le valeur du fichier et transformer pour QTime
 
     QTime tempsActiveFinale = tempsFichier.addMSecs(tempsDiff);         // vais faire la somme des microsecondes avec le temps du fichier
 
