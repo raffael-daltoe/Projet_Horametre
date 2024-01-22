@@ -4,7 +4,6 @@
 #include <QTime>
 #include "Fichier.h"
 #include "CalculeTemps.h"
-
 class Horametre{
 public:
     Horametre();
@@ -13,7 +12,7 @@ public:
     QTime getTempsActuel();
     void setTempsInitiel(QTime tempsInitiel);
     QTime getTempsInitiel();
-    QString actualiserFichier() noexcept(false);
+    QString actualiserFichier(QString value,QString valueTech) noexcept(false);
 
     void setFichierExiste(bool value);
     bool getFichierExiste();

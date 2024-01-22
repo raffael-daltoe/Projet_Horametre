@@ -1,8 +1,6 @@
 #include "IhmHorametre.h"
 #include "ui_IhmHorametre.h"
-
 #include "IhmHorametreException.h"
-#include <iostream>
 #include <QTime>
 
 IhmHorametre::IhmHorametre(QWidget *parent)
@@ -28,56 +26,63 @@ IhmHorametre::IhmHorametre(QWidget *parent)
 IhmHorametre::~IhmHorametre()
 {
     delete ui;
-    //delete sys;
+    delete sys;
     delete tech;
 }
 
 void IhmHorametre::plusButton(){
-    if(this->tech->getTechnicienValid() != 0){
-        this->tech->setPlusValeur(this->tech->getValeuTech()+1);
-        ui->timeTech->setText(QString::number(this->tech->getValeuTech()));
+    if(this->tech->getTechnicienValid() == 1){
+        this->tech->setPlusValeur(5);
+        try{
+            ui->timeTech->setText(this->tech->getValeuTech());
+        }
+        catch(IhmHorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
+            ui->timeTech->setText(e.what());
+        }
     }
-    //while()
-    /*this->tech->setPlusValeur(this->tech->getValeur().toInt()+1);
-    try{
-        ui->timeTech->setText(this->tech->getValeur());
-    }
-    catch(IhmHorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
-        ui->timeTech->setText(e.what());
-    }*/
 }
 
 void IhmHorametre::minusButton(){
-    if(this->tech->getTechnicienValid()!=0){
-        this->tech->setMinusValeur(this->tech->getValeuTech()-1);
-        ui->timeTech->setText(QString::number((this->tech->getValeuTech())));
+    if(this->tech->getTechnicienValid() == 1 && this->tech->getValeuTech()>="00:00:05"){
+        this->tech->setPlusValeur(-5);
+        try{
+            ui->timeTech->setText(this->tech->getValeuTech());
+        }
+        catch(IhmHorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
+            ui->timeTech->setText(e.what());
+        }
     }
-    /*this->tech->setMinusValeur(this->tech->getValeur().toInt()-1);
-    try{
-        ui->timeTech->setText(this->tech->minusValeur());
-    }
-    catch(IhmHorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
-        ui->timeTech->setText(e.what());
-    }*/
 }
 
 void IhmHorametre::ativerTech(){
     this->tech->setTechnicienValid(!this->tech->getTechnicienValid());
-    //ui->ativerTech(this->tech->getTechnicienValid());
+
+    if(this->tech->getTechnicienValid()==1){
+        ui->timeTech->setText("Inserer un valeur s'il vous plaît");
     }
+    else{
+        ui->timeTech->setText("");
+        try{
+            ui->affichage->setText(this->sys->actualiserFichier("Technicien",this->tech->getValeuTech())); // si nous avons une probleme pour afficher, normalement c'est le fichier
+        }
+        catch(IhmHorametreException &e){
+            ui->affichage->setText(e.what());
+        }
+    }
+    ui->curseurVertical->setSliderPosition(0);
+    ui->curseurVertical->setValue(0);
+    ui->curseurVertical->setDisabled(this->tech->getTechnicienValid());
+}
 
 void IhmHorametre::changerAffichage(){
     if(ui->curseurVertical->value()){ // si c'est la vitesse, if( vitesse != 0 )
-        /*QString texte = QString::number(ui->curseurVertical->value()); // change le type du temps(int) pour String
+        QString texte = QString::number(ui->curseurVertical->value()); // change le type du temps(int) pour String
         try{
             ui->affichage->setText(texte + " Km/h");                               // l'afficher
         }
-        catch(HorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
+        catch(IhmHorametreException &e){                           // il y a une probleme de affichage, le taille de la string c'est grand
             ui->affichage->setText(e.what());
         }
-*/
-        QString texte = QString::number(ui->curseurVertical->value()); // change le type du temps(int) pour String
-        ui->affichage->setText(texte + " Km/h");
         if(this->sys->getTempsInitielValid() == 0){                   // ça c'est pour definir le valeur initiel pour chaque fois que nous allons faire la subtracion du temps initiel et actuel
             this->sys->setTempsInitiel(QTime::currentTime());
             this->sys->setTempsInitielValid(true);
@@ -85,16 +90,11 @@ void IhmHorametre::changerAffichage(){
     }
     else{                                           // si c'est le temps
         this->sys->setTempsInitielValid(false);     // vais faire la inversion du TempsInitielValid
-        ui->affichage->setText(this->sys->actualiserFichier()); // si nous avons une probleme pour afficher, normalement c'est le fichier
-
-
-
-        /*
         try{
-            ui->affichage->setText(this->sys->actualiserFichier()); // si nous avons une probleme pour afficher, normalement c'est le fichier
+            ui->affichage->setText(this->sys->actualiserFichier("Curseur","0")); // si nous avons une probleme pour afficher, normalement c'est le fichier
         }
-        catch(HorametreException &e){
+        catch(IhmHorametreException &e){
             ui->affichage->setText(e.what());
-        }*/
+        }
     }
 }

@@ -1,9 +1,6 @@
 #include "Fichier.h"
 #include "IhmHorametreException.h"
-
-#include <iostream>
 #include <fstream>
-#include <string>
 #include <QString>
 
 using namespace std;
