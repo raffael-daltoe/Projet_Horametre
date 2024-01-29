@@ -62,6 +62,9 @@ QString Horametre::actualiserFichier(QString value,QString valueTech)noexcept(fa
         if(sizeof(this->getTempsActive()) > 10){                        // si c'est tres grand, c'est une probleme
             throw IhmHorametreException(IhmHorametreException::STRING_TROP_GD);
         }
+    }
+    else if( value == "Debut" ){
+        return this->file->lireFichier();
     }else{
         this->setTempsActive(valueTech);
         this->file->ecrireFichier(valueTech);

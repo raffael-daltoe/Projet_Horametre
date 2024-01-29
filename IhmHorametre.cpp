@@ -10,6 +10,7 @@ IhmHorametre::IhmHorametre(QWidget *parent)
     ui->setupUi(this);
     this->sys = new Horametre();
     this->tech = new Technicien();
+    ui->affichage->setText(this->sys->actualiserFichier("Debut","0"));
     connect(ui->curseurVertical, SIGNAL(valueChanged(int)), this, SLOT(changerAffichage()));
 
     connect(ui->plusButtonTech, SIGNAL(clicked()), this, SLOT(plusButton()));

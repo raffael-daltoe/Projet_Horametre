@@ -16,7 +16,7 @@ QString Fichier::lireFichier() noexcept(false){
     ifstream file("temps.txt", ios::in);        // ici va créer la variable pour le fichier
     if(!file.is_open()){                        // le fichier n'ai pas cree encore
         return "00:00:00";
-        //throw HorametreException(HorametreException::FILE_PROBLEM);     // c'est pas possible de ouvrir le fichier
+        //throw IhmHorametreException(IhmHorametreException::FILE_PROBLEM);     // c'est pas possible de ouvrir le fichier
     }
     string line = "";
     getline(file, line);                // lira jusqu'a chercher un '\n'
@@ -24,7 +24,6 @@ QString Fichier::lireFichier() noexcept(false){
     if( line[2] != ':' && line[5] != ':'){                              // ce n'est pas le format d'heure ou peut-être que nous n'avons pas pu ouvrir le fichier.
         throw IhmHorametreException(IhmHorametreException::FILE_PROBLEM);     // c'est pas possible de ouvrir le fichier
     }
-
     file.close();
     return QString::fromStdString(line);      // vais retourner le temps du fichier
 

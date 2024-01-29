@@ -17,7 +17,7 @@ Technicien::Technicien(){
 
 Technicien::~Technicien(){
     this->sys->setTempsActive(this->getValeuTech());
-    this->file->ecrireFichier(this->getValeuTech());
+    //this->file->ecrireFichier(this->getValeuTech());
     delete file;
 }
 
